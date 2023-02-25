@@ -7,31 +7,58 @@ import {
     Post,
     Query,
     Route,
+    Request,
+    Security,
     SuccessResponse,
     TsoaResponse
-  } from "tsoa";
-  import { IUser } from "./user";
-  import { UsersService } from "./usersService";
+  } from 'tsoa';
+
+  import { IUser } from './userModel';
+  import { userCreateParams, loginParams } from '../types/user';
+  import { UsersService } from './usersService';
   
-  @Route("users")
+  @Route('users')
   export class UsersController extends Controller {
-    @Get("{userId}")
+    @Security('session')
+    @Get()
     public async getUser(
-      @Path() userId: number
-    ): Promise<IUser> {
-      return new UsersService().get(userId);
+      @Request() request: any
+    ): Promise<Partial<IUser>> {
+      return await new UsersService().get(request.user.username);
     }
   
-    @SuccessResponse("201", "Created") // Custom success response
+    @SuccessResponse('201', 'Created')
     @Post()
     public async createUser(
       @Res() badReqest: TsoaResponse<400, { reason: string }>,
-      @Body() requestBody: Pick<IUser, "email" | "name">
-    ): Promise<IUser> {
+      @Body() requestBody: userCreateParams,
+      @Request() request: any
+    ): Promise<void> {
       try {
-        console.log(requestBody)
-        this.setStatus(201); // set return status 201
-        return await new UsersService().create(requestBody);
+
+        const user: IUser = await new UsersService().create(requestBody);
+        this.setStatus(201);
+        request.session['username'] = user.username;
+        return; 
+        
+      } catch (err: any) {
+        console.error('Caught error', err)
+        return badReqest(400, { reason: err.message })
+      }
+    }
+
+    @Post('/login')
+    public async loginUser(
+      @Res() badReqest: TsoaResponse<400, { reason: string }>,
+      @Body() loginBody: loginParams,
+      @Request() request: any
+    ): Promise<void> {
+      try {
+
+        const user = await new UsersService().validateUser(loginBody) as IUser;
+        request.session['username'] = user.username;
+        return; 
+        
       } catch (err: any) {
         console.error('Caught error', err)
         return badReqest(400, { reason: err.message })
