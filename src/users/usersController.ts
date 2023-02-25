@@ -39,6 +39,7 @@ import {
         const user: IUser = await new UsersService().create(requestBody);
         this.setStatus(201);
         request.session['username'] = user.username;
+        request.session['userId'] = user._id;
         return; 
         
       } catch (err: any) {
@@ -57,6 +58,7 @@ import {
 
         const user = await new UsersService().validateUser(loginBody) as IUser;
         request.session['username'] = user.username;
+        request.session['userId'] = user._id;
         return; 
         
       } catch (err: any) {

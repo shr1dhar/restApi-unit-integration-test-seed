@@ -10,6 +10,7 @@ export function expressAuthentication(
     }
 
     return Promise.resolve({
-      username: request.session.username
+      username: request.session.username,
+      userId: request.session.userId
     });
 }

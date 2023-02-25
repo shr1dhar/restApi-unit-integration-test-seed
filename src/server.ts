@@ -1,13 +1,12 @@
 import { app } from './app';
 import * as http from 'http'
 import mongoose from 'mongoose'
+import { MONGO_URI } from './constants';
 
 const port = process.env.PORT || 3000;
 const server = http.createServer(app)
 
 server.listen(port, () => console.log(`Started at http://localhost:${port}`))
-
-const MONGO_URI = 'mongodb://127.0.0.1:27017/test'
 
 
 server.on('listening', async () => {

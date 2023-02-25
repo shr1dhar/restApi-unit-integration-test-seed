@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose'
 
 import { IUser, UserModel } from './userModel';
 import { userCreateParams, loginParams } from '../types/user';
+import { ERROR_MSG } from '../constants';
 
 
 export class UsersService {
@@ -11,7 +12,7 @@ export class UsersService {
     const user = await UserModel.findOne({ username }) as IUser;
 
     if(!user){
-      throw new Error('NO_USER_FOUND');
+      throw new Error(ERROR_MSG.NO_USER_FOUND);
     }
     
     return { username: user.username, name: user.name } ;
@@ -29,7 +30,7 @@ export class UsersService {
   
       return await user.save() as IUser;
     } catch(error){
-      throw new Error('USERNAME_NOT_AVAILABLE');
+      throw new Error(ERROR_MSG.USERNAME_NOT_AVAILABLE);
     }
     
   }
@@ -39,14 +40,14 @@ export class UsersService {
     const user = await UserModel.findOne({ username }) as IUser;
 
     if(!user){
-      throw new Error('NO_USER_FOUND');
+      throw new Error(ERROR_MSG.NO_USER_FOUND);
     }
 
     if(await this.comparePassword(password, user.password_hash)){
       return user;
     }
 
-    throw new Error('USERNAME_PASSWORD_MISMATCH');
+    throw new Error(ERROR_MSG.USERNAME_PASSWORD_MISMATCH);
   }
 
   private async generatePasswordHash(password: string): Promise<string>{
