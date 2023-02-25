@@ -7,13 +7,13 @@ User & tweet endpoints are available.
 - docker & docker-compose
 - ports: 3000 27017
 - nodeJs 14.8 or above
+- MongoDB (optional) available through docker.
 
 <br>
 
 ### Instructions to run the app
 
-1. To build the docker image, run the following command from root folder
-`docker-compose build`
+1. MongoDB for the app is available through docker. run `docker-compose build` from root folder
 
 2. Start the docker using `docker-compose up`.
 
