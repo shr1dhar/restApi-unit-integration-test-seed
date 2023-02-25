@@ -12,6 +12,7 @@ interface IUser {
 const UserSchema = new mongoose.Schema({
   name: String,
   username: { type: String, unique: true },
+  city: String,
   password_hash: String,
 })
 

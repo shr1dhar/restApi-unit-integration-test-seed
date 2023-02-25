@@ -19,12 +19,13 @@ export class UsersService {
   }
 
   public async create(requestBody: userCreateParams): Promise<IUser> {
-    const { username, name, password } = requestBody;
+    const { username, name, password, city } = requestBody;
     const password_hash = await this.generatePasswordHash(password);
     try {
       const user = new UserModel({
         username: username.replace(/ /g,''),
         name,
+        city,
         password_hash
       });
   
