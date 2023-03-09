@@ -9,7 +9,8 @@
     "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
     "build": "tsoa spec-and-routes && tsc --outDir build --experimentalDecorators",
     "start": "node build/src/server.js",
-    "test:unit": "jest tests/user.spec.js"
+    "test:unit": "jest tests/user.spec.js",
+    "test:integration": "jest tests/integration.spec.js"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
