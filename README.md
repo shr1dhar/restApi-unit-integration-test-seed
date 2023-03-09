@@ -1,4 +1,4 @@
-# twitter clone using typescript
+# RestApi unit & integration test seed project
 
 User & tweet endpoints are available.
 
